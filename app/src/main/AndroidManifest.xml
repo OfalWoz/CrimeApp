@@ -10,8 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CrimeApp">
         <activity
+            android:name=".CrimeActivity"
+            android:exported="false"
+            android:label="EditCrime"
+            android:parentActivityName=".MainActivity"/>
+        <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

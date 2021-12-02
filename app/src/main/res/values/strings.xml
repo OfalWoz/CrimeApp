@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">CrimeApp</string>
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="crime_name">Crime #0</string>
+    <string name="setTitle">Set Title</string>
+    <string name="setDate">Set Date</string>
+    <string name="setSolved">Set Solved</string>
+    <string name="deleteCrime">Delete this crime</string>
+    <string name="fragment">FRAGMENT</string>
+    <string name="set_date">SET DATE</string>
+    <string name="add_crime">Add crime</string>
 </resources>

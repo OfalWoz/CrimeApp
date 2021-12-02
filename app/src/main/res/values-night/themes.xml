@@ -1,10 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.CrimeApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.CrimeApp" parent="Theme.Design">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">#35283C</item>
+        <item name="colorPrimaryVariant">#35283C</item>
+        <item name="colorOnPrimary">#EEEFFE</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
