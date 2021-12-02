@@ -67,7 +67,7 @@ public class CrimeActivity extends AppCompatActivity {
                 String date = makeDateString(day, month, year);
                 dateButton.setText(date);
                 newDate.setDate(day);
-                newDate.setMonth(month);
+                newDate.setMonth(month - 1);
                 newDate.setYear(year - 1900);
             }
         };
