@@ -1,6 +1,7 @@
 package pl.ofalwoz.crimeapp;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +27,7 @@ public class CrimeLab {
         for (int i = 0; i < 5; i++){
             Crime crime = new Crime();
             crime.setTitle("Crime #"+i);
-            crime.setSolved(i%3==0);
+            crime.setSolved(i%2==0);
             crime.setId(i);
             crime.setDate(new Date());
             mCrimes.add(crime);
@@ -39,12 +40,11 @@ public class CrimeLab {
                 return crime;
             }
         }
-        Crime crime = new Crime();
-        crime.setTitle("New Crime");
-        crime.setSolved(false);
-        crime.setId(mCrimes.size());
-        crime.setDate(new Date());
-        return crime;
+        return null;
+    }
+
+    public List<Crime> getCrimes() {
+        return mCrimes;
     }
 
     public void updateCrime(int id, String title, boolean solve, Date date){
@@ -58,13 +58,15 @@ public class CrimeLab {
     }
 
     public void deleteCrime(int id){
+        int i = 0;
         for(Crime crime: mCrimes){
-            if(crime.getId() == id){
+            if(crime.getId() == id) {
                 mCrimes.remove(crime);
                 break;
             }
         }
     }
+
 
     public void newCrime(Crime crime){
         crime.setTitle("New Crime");

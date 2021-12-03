@@ -52,7 +52,7 @@ public class CrimeActivity extends AppCompatActivity {
         timeButton.setText("Set time");
 
         Title.setText(getIntent().getStringExtra("title"));
-        Id = getIntent().getIntExtra("id", R.id.idView);
+        Id = getIntent().getIntExtra("id",0);
         solveView = getIntent().getExtras().getBoolean("solve");
 
         simpleSwitch.setChecked(solveView);

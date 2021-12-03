@@ -8,11 +8,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "pl.edu.uwr.pum.recyclerviewwordlistjava.MESSAGE";
     private RecyclerView recyclerView;
     private WordListAdapter crimeListAdapter;
+    public List<Crime> crimeList = CrimeLab.get(this).getCrimes();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerView);
-        crimeListAdapter = new WordListAdapter(this);
+        crimeListAdapter = new WordListAdapter(this, crimeList);
         recyclerView.setAdapter(crimeListAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

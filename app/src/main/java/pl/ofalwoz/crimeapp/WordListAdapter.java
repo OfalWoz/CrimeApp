@@ -11,18 +11,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.CrimeViewHolder> {
 
-    private final CrimeLab mCrimes;
-    private final LayoutInflater inflater;
+    public final List<Crime> mCrimes;
+    public LayoutInflater inflater;
+
+    public WordListAdapter(Context context, List<Crime> crimeList){
+        inflater = LayoutInflater.from(context);
+        this.mCrimes = crimeList;
+    }
 
     public static final String EXTRA_MESSAGE = "pl.edu.uwr.pum.recyclerviewwordlistjava.MESSAGE";
 
-    public WordListAdapter(Context context){
-        inflater = LayoutInflater.from(context);
-        mCrimes = CrimeLab.get(context);
-    }
 
     class CrimeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -45,11 +48,11 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.CrimeV
         @Override
         public void onClick(View v) {
             int position = getLayoutPosition();
-            Crime currentCrime = mCrimes.getCrime(position);
+            Crime currentCrime = mCrimes.get(position);
             Intent intent = new Intent(context, CrimeActivity.class);
             intent.putExtra(EXTRA_MESSAGE, position);
             intent.putExtra("title", currentCrime.getTitle());
-            intent.putExtra("id", position);
+            intent.putExtra("id", currentCrime.getId());
             intent.putExtra("date", currentCrime.getDate());
             intent.putExtra("solve", currentCrime.getSolved());
             context.startActivity(intent);
@@ -65,7 +68,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.CrimeV
 
     @Override
     public void onBindViewHolder(@NonNull WordListAdapter.CrimeViewHolder holder, int position) {
-        Crime currentCrime = mCrimes.getCrime(position);
+        Crime currentCrime = mCrimes.get(position);
         holder.crimeText.setText(currentCrime.getTitle());
         holder.date.setText(currentCrime.getDate().toString());
         if (currentCrime.getSolved()){
@@ -78,6 +81,6 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.CrimeV
 
     @Override
     public int getItemCount() {
-        return mCrimes.getSize();
+        return mCrimes.size();
     }
 }
