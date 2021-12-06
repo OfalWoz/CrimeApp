@@ -110,12 +110,6 @@ public class CrimeActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
-    public void setCrime(View view) {
-        info= Snackbar.make(idView, "Chenges have been sent!", Snackbar.LENGTH_SHORT);
-        info.show();
-        CrimeLab.get(this).updateCrime(Id, Title.getText().toString(), simpleSwitch.isChecked(), newDate);
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();

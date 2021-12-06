@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projekty/AndroidStudio/CrimeApp/app/src/main/res/drawable/round_style.xml" value="0.3828125" />
         <entry key="..\:/Projekty/AndroidStudio/CrimeApp/app/src/main/res/layout/activity_crime.xml" value="0.33" />
+        <entry key="..\:/Projekty/AndroidStudio/CrimeApp/app/src/main/res/layout/activity_crime_view_pager2.xml" value="0.36666666666666664" />
         <entry key="..\:/Projekty/AndroidStudio/CrimeApp/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Projekty/AndroidStudio/CrimeApp/app/src/main/res/layout/activity_main2.xml" value="0.36666666666666664" />
         <entry key="..\:/Projekty/AndroidStudio/CrimeApp/app/src/main/res/layout/word_list_item.xml" value="0.36666666666666664" />
