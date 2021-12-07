@@ -1,6 +1,5 @@
 package pl.ofalwoz.crimeapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,14 +17,14 @@ public class CrimeActivityAdapter extends RecyclerView.Adapter<CrimeActivityAdap
     private List<Crime> crimeList;
     private LayoutInflater inflater;
 
-    public CrimeActivityAdapter(Context context, List<Crime> crimeList){
+    public CrimeActivityAdapter(CrimeActivity context) {
         inflater = LayoutInflater.from(context);
         this.crimeList = crimeList;
     }
 
     class CrimeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private TextView crimeText;
+        private TextView Title;
         private TextView crimeSolvedText;
         private TextView crimeDateText;
 
@@ -33,7 +32,7 @@ public class CrimeActivityAdapter extends RecyclerView.Adapter<CrimeActivityAdap
 
         public CrimeViewHolder(@NonNull View itemView, CrimeActivityAdapter adapter) {
             super(itemView);
-            crimeText = itemView.findViewById(R.id.title);
+            Title = itemView.findViewById(R.id.title);
             crimeSolvedText = itemView.findViewById(R.id.solved);
             crimeDateText = itemView.findViewById(R.id.date);
             this.adapter = adapter;
@@ -51,7 +50,6 @@ public class CrimeActivityAdapter extends RecyclerView.Adapter<CrimeActivityAdap
             adapter.notifyItemChanged(position);
 
             intent = new Intent(view.getContext(), Crime.class);
-           // intent.putExtra("id",element.getId().toString());
             intent.putExtra("position", getLayoutPosition());
             view.getContext().startActivity(intent);
         }
@@ -69,7 +67,7 @@ public class CrimeActivityAdapter extends RecyclerView.Adapter<CrimeActivityAdap
     @Override
     public void onBindViewHolder(@NonNull CrimeViewHolder holder, int position) {
         Crime current = crimeList.get(position);
-        holder.crimeText.setText(current.getTitle());
+        holder.Title.setText(current.getTitle());
         holder.crimeSolvedText.setText("Solved:" + String.valueOf(current.getSolved()));
         holder.crimeDateText.setText(current.getDate().toString());
     }

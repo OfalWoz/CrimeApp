@@ -50,7 +50,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.CrimeV
             int position = getLayoutPosition();
             Crime currentCrime = mCrimes.get(position);
             Intent intent = new Intent(context, CrimeActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, position);
+            intent.putExtra("position", position);
             intent.putExtra("title", currentCrime.getTitle());
             intent.putExtra("id", currentCrime.getId());
             intent.putExtra("date", currentCrime.getDate());

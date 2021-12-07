@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="5"
         android:orientation="horizontal">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -21,13 +21,16 @@
             android:gravity="center"
             android:text="Tittle" />
 
-        <TextView
-            android:id="@+id/idView"
+        <Button
+            android:id="@+id/delete"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="5dp"
             android:layout_weight="4"
-            android:gravity="center"
-            android:text="Id" />
+            android:background="#8F617D"
+            android:onClick="delCrime"
+            android:text="Delete" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -47,8 +50,7 @@
             style="?android:spinnerStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:onClick="date"/>
+            android:layout_weight="4" />
 
         <Button
             android:id="@+id/time"
@@ -61,8 +63,7 @@
             style="?android:spinnerStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:onClick="time"/>
+            android:layout_weight="4" />
 
         <Switch
             android:id="@+id/solved"
@@ -84,15 +85,7 @@
             android:orientation="horizontal">
 
 
-            <Button
-                android:id="@+id/delete"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:background="#8F617D"
-                android:onClick="delCrime"
-                android:text="Delete" />
+
 
         </LinearLayout>
 
@@ -103,6 +96,7 @@
             android:orientation="horizontal">
 
             <Button
+                android:onClick="First"
                 android:id="@+id/first"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -112,6 +106,7 @@
                 android:text="first" />
 
             <Button
+                android:onClick="Last"
                 android:id="@+id/last"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

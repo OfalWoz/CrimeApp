@@ -5,67 +5,67 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.snackbar.Snackbar;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
 public class CrimeActivity extends AppCompatActivity {
 
-    Snackbar info;
-    public TextView Title;
+    public List<Crime> crimes =  CrimeLab.get(this).getCrimes();
     public int Id;
-    public TextView idView;
-    public boolean solveView;
-    Switch simpleSwitch;
     public Date newDate = new Date();
     private DatePickerDialog datePickerDialog;
     private Button dateButton;
     private Button timeButton;
     int hour, minute;
+    public String date = "Set Date";
+    public String time = "Set Time";
+
+    private ViewPager2 viewPager2;
+    private int crimePos;
 
 
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crime);
+        setContentView(R.layout.activity_crime_view_pager2);
+        viewPager2 = findViewById(R.id.detail_view_pager);
+        CrimeActivityAdapter adapter = new CrimeActivityAdapter();
+        viewPager2.setAdapter(adapter);
 
-        Title = findViewById(R.id.title);
-        idView = findViewById(R.id.idView);
-        simpleSwitch = (Switch) findViewById(R.id.solved);
-        initDatePicker();
-        dateButton = findViewById(R.id.date);
-        dateButton.setText("Set date");
-
-        timeButton = findViewById(R.id.time);
-        timeButton.setText("Set time");
-
-        Title.setText(getIntent().getStringExtra("title"));
-        Id = getIntent().getIntExtra("id",0);
-        solveView = getIntent().getExtras().getBoolean("solve");
-
-        simpleSwitch.setChecked(solveView);
-        idView.setText("Id: "+Id);
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            Id = getIntent().getIntExtra("id",0);
+            crimePos = getIntent().getIntExtra("position",0);
+        }
+        viewPager2.setCurrentItem(crimePos, false);
     }
-    
-    private void initDatePicker() {
+
+    @SuppressLint("WrongViewCast")
+    public void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 month = month + 1;
-                String date = makeDateString(day, month, year);
-                dateButton.setText(date);
+                //date = makeDateString(day, month, year);
                 newDate.setDate(day);
                 newDate.setMonth(month - 1);
                 newDate.setYear(year - 1900);
@@ -79,14 +79,11 @@ public class CrimeActivity extends AppCompatActivity {
         int style = AlertDialog.THEME_DEVICE_DEFAULT_DARK;
 
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
-    }
-
-    private String makeDateString(int day, int month, int year) {
-        return day + "." + month + "." + year;
-    }
-
-    public void date(View view) {
         datePickerDialog.show();
+    }
+
+    public String makeDateString(int day, int month, int year) {
+        return day + "." + month + "." + year;
     }
 
     public void time(View view) {
@@ -97,7 +94,7 @@ public class CrimeActivity extends AppCompatActivity {
                 minute = minute;
                 newDate.setHours(hour);
                 newDate.setMinutes(minute);
-                timeButton.setText(String.format(Locale.getDefault(),"%02d:%02d",hour,minute));
+                //time = String.format(Locale.getDefault(),"%02d:%02d",hour,minute);
             }
         };
         Calendar cal = Calendar.getInstance();
@@ -110,16 +107,150 @@ public class CrimeActivity extends AppCompatActivity {
         timePickerDialog.show();
     }
 
+    public class CrimeActivityAdapter extends RecyclerView.Adapter<CrimeActivityAdapter.CrimeViewHolder> {
+
+        public class CrimeViewHolder extends RecyclerView.ViewHolder {
+            public Date newDate;
+            private EditText Title;
+            private TextView viewId;
+            private Button crimeDate;
+            private Button crimeTime;
+            private Switch crimeSolve;
+
+            private Button First;
+            private Button Last;
+
+            CrimeActivityAdapter adapter;
+
+            public CrimeViewHolder(@NonNull View itemView, CrimeActivityAdapter adapter){
+                super(itemView);
+                Title = itemView.findViewById(R.id.title);
+                crimeDate = itemView.findViewById(R.id.date);
+                crimeTime = itemView.findViewById(R.id.time);
+                crimeSolve = itemView.findViewById(R.id.solved);
+                First = itemView.findViewById(R.id.first);
+                Last = itemView.findViewById(R.id.last);
+                this.adapter = adapter;
+
+                crimeDate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        initDatePicker();
+                        crimeDate.setText("Date seted!"); //niestety pokazywanie wybranej daty i godziny dzialalo z opoznieniem dlatego ustawilem tylko zmiane napisu
+                    }
+                });
+
+                crimeTime.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        time(view);
+                        crimeTime.setText("Time seted!");
+                    }
+                });
+
+            }
+        }
+
+        @NonNull
+        @Override
+        public CrimeActivityAdapter.CrimeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new CrimeViewHolder(
+                    (LayoutInflater.from(CrimeActivity.this).inflate(
+                            R.layout.activity_crime,
+                            parent,
+                            false
+                    )),
+                    this
+            );
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull CrimeActivityAdapter.CrimeViewHolder holder, int position) {
+            Crime current = crimes.get(position);
+            holder.Title.setText(current.getTitle());
+            holder.crimeDate.setText(date);
+            holder.crimeTime.setText(time);
+            holder.crimeSolve.setChecked(current.getSolved());
+            newDate = new Date();
+            Id = crimes.get(position).getId();
+            crimePos = viewPager2.getCurrentItem();
+            holder.Title.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    current.setTitle(holder.Title.getText().toString());
+                }
+            });
+            holder.crimeDate.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    holder.newDate = newDate;
+                }
+                @Override
+                public void afterTextChanged(Editable s) {
+                    current.setDate(holder.newDate);
+                }
+            });
+            holder.crimeTime.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    holder.newDate = newDate;
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    holder.newDate = newDate;
+                    current.setDate(holder.newDate);
+                }
+            });
+            holder.crimeSolve.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    current.setSolved(holder.crimeSolve.isChecked());
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return crimes.size();
+        }
+
+    }
+
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        CrimeLab.get(this).updateCrime(Id,Title.getText().toString(),simpleSwitch.isChecked(), newDate);
+
+    }
+
+    public void First(View view){
+        viewPager2.setCurrentItem(0);
+    }
+
+    public void Last(View view){
+        viewPager2.setCurrentItem(crimes.size());
     }
 
     public void delCrime(View view) {
