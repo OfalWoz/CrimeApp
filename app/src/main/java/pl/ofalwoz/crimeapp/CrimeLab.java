@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CrimeLab {
+public class CrimeLab{
+
     private static CrimeLab sCrimeLab;
 
     public static List<Crime> mCrimes;
+    private DBHandler mDbHandler;
 
     public int getSize() { return mCrimes.size(); }
 
@@ -17,20 +19,11 @@ public class CrimeLab {
         if(sCrimeLab == null) {
             sCrimeLab = new CrimeLab(context);
         }
-
         return sCrimeLab;
     }
 
     private CrimeLab(Context context) {
         mCrimes = new ArrayList<>();
-        for (int i = 0; i < 5 ; i++){
-            Crime crime = new Crime();
-            crime.setTitle("Crime #"+i);
-            crime.setSolved(i%2==0);
-            crime.setId(i);
-            crime.setDate(new Date());
-            mCrimes.add(crime);
-        }
     }
 
     public Crime getCrime(int id) {
@@ -66,11 +59,10 @@ public class CrimeLab {
         }
     }
 
-
     public void newCrime(Crime crime){
-        crime.setTitle("New Crime");
-        crime.setSolved(false);
         crime.setId(mCrimes.size());
+        crime.setTitle("New crime");
+        crime.setSolved(false);
         crime.setDate(new Date());
         mCrimes.add(crime);
     }

@@ -38,15 +38,16 @@ public class CrimeActivity extends AppCompatActivity {
     int hour, minute;
     public String date = "Set Date";
     public String time = "Set Time";
+    private DBHandler mDbHandler;
 
     private ViewPager2 viewPager2;
     private int crimePos;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crime_view_pager2);
+        mDbHandler = new DBHandler(this);
         viewPager2 = findViewById(R.id.detail_view_pager);
         CrimeActivityAdapter adapter = new CrimeActivityAdapter();
         viewPager2.setAdapter(adapter);
@@ -80,10 +81,6 @@ public class CrimeActivity extends AppCompatActivity {
 
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
         datePickerDialog.show();
-    }
-
-    public String makeDateString(int day, int month, int year) {
-        return day + "." + month + "." + year;
     }
 
     public void time(View view) {
@@ -186,6 +183,7 @@ public class CrimeActivity extends AppCompatActivity {
                 @Override
                 public void afterTextChanged(Editable s) {
                     current.setTitle(holder.Title.getText().toString());
+                    mDbHandler.updateCrime(current.getId(), current.getTitle(), current.getDate(), current.getSolved());
                 }
             });
             holder.crimeDate.addTextChangedListener(new TextWatcher() {
@@ -200,6 +198,7 @@ public class CrimeActivity extends AppCompatActivity {
                 @Override
                 public void afterTextChanged(Editable s) {
                     current.setDate(holder.newDate);
+                    mDbHandler.updateCrime(current.getId(), current.getTitle(), current.getDate(), current.getSolved());
                 }
             });
             holder.crimeTime.addTextChangedListener(new TextWatcher() {
@@ -216,12 +215,14 @@ public class CrimeActivity extends AppCompatActivity {
                 public void afterTextChanged(Editable s) {
                     holder.newDate = newDate;
                     current.setDate(holder.newDate);
+                    mDbHandler.updateCrime(current.getId(), current.getTitle(), current.getDate(), current.getSolved());
                 }
             });
             holder.crimeSolve.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     current.setSolved(holder.crimeSolve.isChecked());
+                    mDbHandler.updateCrime(current.getId(), current.getTitle(), current.getDate(), current.getSolved());
                 }
             });
         }
@@ -254,7 +255,7 @@ public class CrimeActivity extends AppCompatActivity {
     }
 
     public void delCrime(View view) {
-        CrimeLab.get(this).deleteCrime(Id);
+        mDbHandler.deleteCrime(Id);
         finish();
     }
 }

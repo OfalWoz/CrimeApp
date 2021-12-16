@@ -5,27 +5,31 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
-public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.CrimeViewHolder> {
+public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.CrimeViewHolder> implements Filterable {
 
     public final List<Crime> mCrimes;
     public LayoutInflater inflater;
 
+
     public WordListAdapter(Context context, List<Crime> crimeList){
-        inflater = LayoutInflater.from(context);
+        this.inflater = LayoutInflater.from(context);
         this.mCrimes = crimeList;
     }
 
     public static final String EXTRA_MESSAGE = "pl.edu.uwr.pum.recyclerviewwordlistjava.MESSAGE";
-
 
     class CrimeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -41,8 +45,8 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.CrimeV
             crimeText = itemView.findViewById(R.id.word);
             crimeImage = itemView.findViewById(R.id.solved_image);
             date = itemView.findViewById(R.id.date);
-            this.adapter = adapter;
             itemView.setOnClickListener(this);
+            this.adapter = adapter;
         }
 
         @Override
@@ -78,6 +82,39 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.CrimeV
             holder.crimeImage.setVisibility(View.INVISIBLE);
         }
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Crime> filter = new ArrayList<>();
+            FilterResults results = new FilterResults();
+
+            if (constraint.toString().isEmpty()) {
+                filter.addAll(mCrimes);
+            }
+            else {
+                for (Crime c : mCrimes) {
+                    if (c.getTitle().toLowerCase().contains(constraint.toString().toLowerCase())) {
+                        filter.add(c);
+                    }
+                }
+            }
+            results.values = filter;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(final CharSequence constraint, FilterResults results) {
+            mCrimes.clear();
+            mCrimes.addAll((Collection<? extends Crime>) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     @Override
     public int getItemCount() {
